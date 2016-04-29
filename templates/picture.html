@@ -1,5 +1,10 @@
 {% extends "index.html" %}
 {% block body %}
+
+    <h1>TADA! Here is your super awesome logo. You'll be famous</h1>
+    {% if img == 'default.jpg' %}
+      <p>And a cat for you for being a pussy</p>
+    {% endif %}
     <img style={ width: 100%; } src={{ '/static/' + img }}>
 {% endblock %}
 
