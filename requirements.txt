@@ -1,5 +1,6 @@
 Django==1.9.5
 Flask==0.10.1
+gunicorn==19.4.5
 image==1.5.3
 itsdangerous==0.24
 Jinja2==2.8
