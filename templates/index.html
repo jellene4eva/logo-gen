@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Amazing Logo Generator</title>
+
+  <meta name="description" content="This will make you famous">
+  <meta name="author" content="Jellene Khoh">
+
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="./static/style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Most Superawesome Logo Generator Of All Time Since 5Ever</h1>
+      {% for message in get_flashed_messages() %}
+        <div class=flash>{{ message }}</div>
+      {% endfor %}
+      {% block body %}{% endblock %}
+  </main>
+</body>
+</html>
