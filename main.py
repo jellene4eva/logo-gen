@@ -123,6 +123,6 @@ def picture(img=None):
     return render_template('picture.html', img=path)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
 
 
