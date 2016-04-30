@@ -18,8 +18,7 @@ def create_img(arg1, arg2, arg3):
 
     text1 = arg1
     text1_font = 50
-    text1_x = (img_width/2) - (len(text1) * 16 )
-    text1_y = 80
+    text1_y = 40
 
     text2 = arg2
     text2_font = 20
@@ -41,10 +40,19 @@ def create_img(arg1, arg2, arg3):
     image = Image.new('RGB', (img_width, img_height), 'white')
     draw = ImageDraw.Draw(image)
     font = ImageFont.truetype("./static/fonts/LibreBaskerville-Regular.ttf", text1_font)
+    x, y = draw.textsize(text1, font=font)
+
+    # make sure text is within box
+    while x > 600:
+        text1_font -= 1
+        font = ImageFont.truetype("./static/fonts/LibreBaskerville-Regular.ttf", text1_font)
+        x, y = draw.textsize(text1, font=font)
+
+    text1_x = img_width/2 - (int(x)/2)
 
     n = 0
     while n < 20:
-        draw.text((text1_x + n + 2, text1_y-40 + n + 2), text1, (120+n*5, 120+n*5, 120+n*5), font=font)
+        draw.text((text1_x + n + 2, text1_y + n + 2), text1, (120+n*5, 120+n*5, 120+n*5), font=font)
         if n > 15:
             image = image.filter(ImageFilter.BLUR)
         n += 1
@@ -55,7 +63,15 @@ def create_img(arg1, arg2, arg3):
     #================================
     image = Image.new('RGBA',(img_width, img_height))
     draw = ImageDraw.Draw(image)
-    text = draw.text((text1_x, text1_y-40), text1, ('#26343F') , font=font)
+    x, y = draw.textsize(text1, font=font)
+
+    while x > 600:
+        text1_font -= 1
+        font = ImageFont.truetype("./static/fonts/LibreBaskerville-Regular.ttf", text1_font)
+        x, y = draw.textsize(text1, font=font)
+
+    text1_x = img_width/2 - (int(x)/2)
+    text = draw.text((text1_x, text1_y), text1, ('#26343F') , font=font)
     image.save(tmp_text_file, 'PNG')
 
     command = "./lib/bevel.sh -w 10 -f inner -o raised {0} {0}".format(tmp_text_file)
@@ -72,19 +88,23 @@ def create_img(arg1, arg2, arg3):
     #===============================
 
     with Drawing() as draw:
-
-        draw.font = './static/fonts/Calibri.ttf'
-        draw.font_size = text2_font
-        draw.fill_color = Color('#222324')
-        text2 = " ".join(text2)
-        draw.text(text2_x, text2_y, text2)
-
-        draw.font = './static/fonts/matura-mt-script.ttf'
-        draw.font_size = text3_font
-        draw.fill_color = Color('#7F9DAC')
-        draw.text(text3_x, text3_y, text3)
-
         with WandImage(filename=tmp_img_file) as img:
+
+            draw.font = './static/fonts/Calibri.ttf'
+            draw.font_size = text2_font
+            draw.fill_color = Color('#222324')
+            text2 = " ".join(text2)
+            x = draw.get_font_metrics(img, text2)[11] #12th is the x in the metric
+            text2_x = (img_width/2) - (int(x)/2)
+            draw.text(text2_x, text2_y, text2)
+
+            draw.font = './static/fonts/matura-mt-script.ttf'
+            draw.font_size = text3_font
+            draw.fill_color = Color('#7F9DAC')
+            x = draw.get_font_metrics(img, text3)[11] #12th is the x in the metric
+            text3_x = (img_width/2) - (int(x)/2)
+            draw.text(text3_x, text3_y, text3)
+
             draw.draw(img)
             img.save(filename=tmp_img_file)
             return tmp_img_file.replace("static/", "")
@@ -105,7 +125,7 @@ def mainpage():
             text1 = request.form['text1']
             text2 = request.form['text2']
             text3 = request.form['text3']
-            if not (text1 or text2 or text3):
+            if not (text1 and text2 and text3):
                 img = None
             else:
                 img = create_img(text1, text2, text3)
@@ -123,6 +143,6 @@ def picture(img=None):
     return render_template('picture.html', img=path)
 
 if __name__ == '__main__':
-    app.run(PORT=33507)
+    app.run(Debug=True)
 
 

@@ -15,7 +15,13 @@
 </head>
 <body>
   <main class="container">
-    <h1>Most Superawesome Logo Generator Of All Time Since 5Ever</h1>
+      <div class="links">
+          <a href='/'>MAIN PAGE</a>
+          <a href='http://says.com/my/news/kl-s-new-tourism-logo-and-tagline'>READ MORE...</a>
+      </div>
+
+      <h1>Most Superawesome Logo Generator Of All Time Since 5Ever</h1>
+
       {% for message in get_flashed_messages() %}
         <div class=flash>{{ message }}</div>
       {% endfor %}

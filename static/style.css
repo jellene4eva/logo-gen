@@ -1,11 +1,17 @@
 h1 { color: red; }
 
+.links {
+    float: left;
+}
+
+a { display: block; }
+
 body {
   background: green;
 }
 
 .container {
-  width: 80%;
+  width: 60%;
   margin: 0 auto;
   text-align: center;
 }
