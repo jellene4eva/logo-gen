@@ -50,6 +50,8 @@ def create_img(arg1, arg2, arg3):
 
     text1_x = img_width/2 - (int(x)/2)
 
+    # draw the shadow by moving and drawing the text to the bottom right for 20 iterations
+    # and also making it lighter as we iterate
     n = 0
     while n < 20:
         draw.text((text1_x + n + 2, text1_y + n + 2), text1, (120+n*5, 120+n*5, 120+n*5), font=font)
@@ -74,6 +76,7 @@ def create_img(arg1, arg2, arg3):
     text = draw.text((text1_x, text1_y), text1, ('#26343F') , font=font)
     image.save(tmp_text_file, 'PNG')
 
+    # Uses 3rd party bevel script that uses imagemagick to add effects
     command = "./lib/bevel.sh -w 10 -f inner -o raised {0} {0}".format(tmp_text_file)
 
     import subprocess
